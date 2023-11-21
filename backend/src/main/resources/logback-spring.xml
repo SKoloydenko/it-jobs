@@ -1,0 +1,50 @@
+<configuration scan="true" scanPeriod="1 seconds">
+    <include resource="org/springframework/boot/logging/logback/default.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <springProperty name="LOG_PATTERN_CONSOLE" source="logging.pattern.console"/>
+    <springProperty name="LOG_PATTERN_FILE" source="logging.pattern.file"/>
+    <springProperty name="LOG_PATH" source="logging.path.main" defaultValue="./logs"/>
+    <springProperty name="LOG_PATH_HIBERNATE" source="logging.path.hibernate" defaultValue="./logs"/>
+    <springProperty name="LOG_FILE" source="logging.file" defaultValue="app.log"/>
+
+    <appender name="console" additivity="false" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN_CONSOLE}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="springLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/spring-framework.log</file>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/spring-logs.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="hibernateLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %X{ROLE} with ID "%X{ID}" %msg%n
+            </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH_HIBERNATE}/hibernate-logs.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="hibernateLog"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

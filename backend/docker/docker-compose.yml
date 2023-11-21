@@ -1,0 +1,39 @@
+name: it-jobs
+services:
+  app:
+    container_name: app
+    hostname: app
+    build: ..
+    env_file: ../env/.env
+    volumes:
+      - ../data/app/logs:/logs
+    networks:
+      - it-jobs-network
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - mysql
+    logging:
+      options:
+        max-size: 10m
+
+  mysql:
+    container_name: mysql
+    hostname: mysql
+    image: mysql:latest
+    env_file: ../env/.env
+    volumes:
+      - ../data/app/mysql:/var/lib/mysql
+    networks:
+      - it-jobs-network
+    ports:
+      - "3306:3306"
+    restart: always
+    logging:
+      options:
+        max-size: 10m
+
+networks:
+  it-jobs-network:
+    external: true

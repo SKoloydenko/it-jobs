@@ -1,0 +1,37 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-width: 460px;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #000;
+	background: #fffffe;
+	padding: 40px;
+	@media screen and (max-width: 480px) {
+		min-width: 300px;
+		box-shadow: none;
+		padding: 0;
+	}
+}
+
+.error {
+	& input[type="text"] {
+		border: 3px solid #e53170;
+	}
+	& input[type="email"] {
+		border: 3px solid #e53170;
+	}
+	& input[type="password"] {
+		border: 3px solid #e53170;
+	}
+	& select {
+		border: 3px solid #e53170;
+	}
+}
+
+.title {
+	font: 24px "Montserrat", sans-serif;
+	font-weight: 700;
+	color: #2b2c34;
+}

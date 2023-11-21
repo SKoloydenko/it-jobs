@@ -1,0 +1,37 @@
+.input {
+	display: flex;
+	width: 100%;
+	min-width: 200px;
+	padding: 10px;
+	border-radius: 5px;
+	border: 3px solid #2b2c34;
+	font: 16px "Montserrat", sans-serif;
+	font-weight: 600;
+	color: #2b2c34;
+	background: #fffffe;
+	&::placeholder {
+		color: #a7a9be;
+	}
+}
+
+.file {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	min-width: 200px;
+	font: 16px "Montserrat", sans-serif;
+	font-weight: 600;
+	&::placeholder {
+		color: #a7a9be;
+	}
+}
+
+.file::-webkit-file-upload-button {
+	cursor: pointer;
+	font: 16px "Montserrat", sans-serif;
+	font-weight: 600;
+	background: #fffffe;
+	border-radius: 5px;
+	border: 3px solid #2b2c34;
+	padding: 10px;
+}

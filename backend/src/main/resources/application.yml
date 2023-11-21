@@ -1,0 +1,62 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+  servlet:
+    context-path: /api
+
+spring:
+  main:
+    banner-mode: off
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:it_jobs}?createDatabaseIfNotExist=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_ROOT_PASSWORD:password}
+
+  jpa:
+    show-sql: true
+    format-sql: true
+    generate-ddl: off
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+  security:
+    jwt:
+      secret: ${JWT_SECRET:secret}
+      refresh:
+        lifetime: 336 # hours
+      access:
+        lifetime: 24
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+  devtools:
+    restart:
+      enabled: true
+
+logging:
+  file.name: "it-jobs.log"
+  path:
+    main: "../logs"
+    hibernate: "../logs/hibernate"
+  pattern:
+    file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%t] [%logger - %line]: %m%n"
+    console: "%boldWhite(%d{YYYY-MM-dd HH:mm:ss.SSS}) [%thread] %cyan(%-5level) %yellow(%logger{36}) - %msg%n"
+  level:
+    root: INFO
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+properties:
+  superjob:
+    appId: ${SUPERJOB_APP_ID:1}
+    secret-key: ${SUPERJOB_SECRET_KEY:secret}
+
+
