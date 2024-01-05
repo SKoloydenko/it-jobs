@@ -3,16 +3,21 @@ package com.sdk.itjobs.database.entity.vacancy;
 import com.sdk.itjobs.database.entity.AbstractCreatedAtEntity;
 import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -47,4 +52,7 @@ public class Vacancy extends AbstractCreatedAtEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Aggregator aggregator;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vacancy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FavouriteVacancy> favouriteVacancies;
 }

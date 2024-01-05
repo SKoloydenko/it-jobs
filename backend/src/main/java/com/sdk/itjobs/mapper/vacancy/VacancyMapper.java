@@ -59,7 +59,7 @@ public class VacancyMapper {
     }
 
     public PageResponse<VacancyResponse> asPageResponse(Page<Vacancy> page) {
-        return new PageResponse(
+        return new PageResponse<>(
                 page.stream().map(this::asResponse).collect(Collectors.toList()),
                 (long) page.getNumber(),
                 (long) page.getNumberOfElements(),

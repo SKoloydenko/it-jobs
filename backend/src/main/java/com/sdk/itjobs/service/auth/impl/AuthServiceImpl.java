@@ -18,8 +18,8 @@ import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse register(RegistrationRequest request) throws ResourceAlreadyExistsException {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new ResourceAlreadyExistsException(User.class, "email", request.getEmail());
         }
         String passwordHash = passwordEncoder.encode(request.getPassword());
