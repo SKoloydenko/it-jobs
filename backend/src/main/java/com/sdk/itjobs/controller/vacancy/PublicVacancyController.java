@@ -24,7 +24,7 @@ public class PublicVacancyController {
     public ResponseEntity<?> list(
             @RequestParam(value = "programmingLanguage", required = false) ProgrammingLanguage programmingLanguage,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "size", defaultValue = "15") Integer size
+            @RequestParam(value = "size", defaultValue = "20") Integer size
     ) {
         PageResponse<VacancyResponse> vacancies = vacancyService.list(programmingLanguage, PageRequest.of(page - 1, size));
         return ResponseEntity.ok().body(vacancies);

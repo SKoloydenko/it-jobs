@@ -39,7 +39,7 @@ public class PublicAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> register(@RequestBody LoginRequest request) throws ResourceNotFoundException, IncorrectPasswordException {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) throws ResourceNotFoundException, IncorrectPasswordException {
         Pair<TokenResponse, String> pair = authService.login(request);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, generateRefreshCookie(pair.getSecond(), refreshTokenLifetime * 60 * 60))
@@ -47,7 +47,7 @@ public class PublicAuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@CookieValue(REFRESH_TOKEN_COOKIE) String cookie) throws ResourceNotFoundException, IncorrectPasswordException, CorruptedTokenException {
+    public ResponseEntity<?> refresh(@CookieValue(REFRESH_TOKEN_COOKIE) String cookie) throws ResourceNotFoundException, CorruptedTokenException {
         Pair<TokenResponse, String> pair = authService.refresh(cookie);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, generateRefreshCookie(pair.getSecond(), refreshTokenLifetime * 60 * 60))
@@ -55,7 +55,7 @@ public class PublicAuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@CookieValue(REFRESH_TOKEN_COOKIE) String cookie) throws ResourceNotFoundException, IncorrectPasswordException {
+    public ResponseEntity<?> logout(@CookieValue(REFRESH_TOKEN_COOKIE) String cookie) {
         authService.logout(cookie);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, generateRefreshCookie("", 0L))
