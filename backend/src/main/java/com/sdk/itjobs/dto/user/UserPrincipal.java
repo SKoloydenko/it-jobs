@@ -1,4 +1,3 @@
 package com.sdk.itjobs.dto.user;
 
-public record UserPrincipal(Long userId) {
-}
+public record UserPrincipal(Long userId) {}

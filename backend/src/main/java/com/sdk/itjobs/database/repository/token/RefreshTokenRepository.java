@@ -2,6 +2,7 @@ package com.sdk.itjobs.database.repository.token;
 
 import com.sdk.itjobs.database.entity.token.RefreshToken;
 import com.sdk.itjobs.database.repository.AbstractRepository;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

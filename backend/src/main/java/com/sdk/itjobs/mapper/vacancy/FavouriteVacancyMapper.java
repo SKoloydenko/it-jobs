@@ -5,7 +5,9 @@ import com.sdk.itjobs.database.entity.vacancy.FavouriteVacancy;
 import com.sdk.itjobs.database.entity.vacancy.Vacancy;
 import com.sdk.itjobs.dto.PageResponse;
 import com.sdk.itjobs.dto.vacancy.response.FavouriteVacancyResponse;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,7 @@ public class FavouriteVacancyMapper {
     private final VacancyMapper vacancyMapper;
 
     public FavouriteVacancy asEntity(Vacancy vacancy, User user) {
-        return FavouriteVacancy.builder()
-                .vacancy(vacancy)
-                .user(user)
-                .build();
+        return FavouriteVacancy.builder().vacancy(vacancy).user(user).build();
     }
 
     public FavouriteVacancyResponse asResponse(FavouriteVacancy favouriteVacancy) {
@@ -35,7 +34,6 @@ public class FavouriteVacancyMapper {
                 page.stream().map(this::asResponse).collect(Collectors.toList()),
                 (long) page.getNumber(),
                 (long) page.getNumberOfElements(),
-                (long) page.getTotalPages()
-        );
+                (long) page.getTotalPages());
     }
 }

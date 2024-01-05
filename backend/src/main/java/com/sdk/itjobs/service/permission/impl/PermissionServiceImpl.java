@@ -5,7 +5,9 @@ import com.sdk.itjobs.exception.ForbiddenException;
 import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.service.permission.PermissionService;
 import com.sdk.itjobs.service.user.UserService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Long getPrincipal() {
-        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String principal =
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return Long.parseLong(principal);
     }
 }

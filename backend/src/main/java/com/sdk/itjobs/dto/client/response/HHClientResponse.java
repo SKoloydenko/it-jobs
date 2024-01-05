@@ -2,6 +2,7 @@ package com.sdk.itjobs.dto.client.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 import java.util.Map;
@@ -11,11 +12,14 @@ import java.util.Map;
 public class HHClientResponse {
     @JsonProperty("id")
     private Long id;
+
     @JsonProperty("name")
     private String title;
+
     private String minSalary = null;
     private String maxSalary = null;
     private String employer;
+
     @JsonProperty("alternate_url")
     private String url;
 

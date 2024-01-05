@@ -11,7 +11,9 @@ import com.sdk.itjobs.mapper.vacancy.VacancyMapper;
 import com.sdk.itjobs.service.vacancy.hh.HHVacancyAggregationService;
 import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
+
 import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,18 +32,26 @@ public class HHVacancyAggregationServiceImpl implements HHVacancyAggregationServ
     private final VacancyMapper vacancyMapper;
 
     @Override
-    public void aggregate(ProgrammingLanguage programmingLanguage) throws JsonProcessingException, InterruptedException {
+    public void aggregate(ProgrammingLanguage programmingLanguage)
+            throws JsonProcessingException, InterruptedException {
         filter(programmingLanguage, getClientResponse(programmingLanguage));
     }
 
-    private List<HHClientResponse> getClientResponse(ProgrammingLanguage programmingLanguage) throws JsonProcessingException, InterruptedException {
+    private List<HHClientResponse> getClientResponse(ProgrammingLanguage programmingLanguage)
+            throws JsonProcessingException, InterruptedException {
         long page = 0L;
         Long maxPage = null;
         final Long pageSize = 100L;
 
         List<HHClientResponse> vacancies = new ArrayList<>();
         do {
-            logger.info("Requesting vacancies for " + programmingLanguage.name() + " from hh.ru on page " + page + " with max page " + maxPage);
+            logger.info(
+                    "Requesting vacancies for "
+                            + programmingLanguage.name()
+                            + " from hh.ru on page "
+                            + page
+                            + " with max page "
+                            + maxPage);
             String response = hhClient.getVacancies(programmingLanguage.name(), page, pageSize);
             vacancies.addAll(parseJsonResponse(response));
             page++;
@@ -53,10 +63,10 @@ public class HHVacancyAggregationServiceImpl implements HHVacancyAggregationServ
         return vacancies;
     }
 
-    private List<HHClientResponse> parseJsonResponse(String response) throws JsonProcessingException {
+    private List<HHClientResponse> parseJsonResponse(String response)
+            throws JsonProcessingException {
         String items = objectMapper.readTree(response).get("items").toString();
-        return objectMapper.readValue(items, new TypeReference<>() {
-        });
+        return objectMapper.readValue(items, new TypeReference<>() {});
     }
 
     private Long getMaxPage(String response) throws JsonProcessingException {
@@ -64,12 +74,18 @@ public class HHVacancyAggregationServiceImpl implements HHVacancyAggregationServ
     }
 
     private void filter(ProgrammingLanguage programmingLanguage, List<HHClientResponse> vacancies) {
-        vacancies.stream().filter(vacancy ->
-                vacancy.getTitle().toLowerCase().contains(programmingLanguage.name().toLowerCase())
-                        && !vacancyRepository.existsByExternalIdAndAggregator(vacancy.getId(), Aggregator.HH)
-        ).forEach(vacancy -> {
-            Vacancy entity = vacancyMapper.asEntity(programmingLanguage, vacancy);
-            vacancyRepository.save(entity);
-        });
+        vacancies.stream()
+                .filter(
+                        vacancy ->
+                                vacancy.getTitle()
+                                                .toLowerCase()
+                                                .contains(programmingLanguage.name().toLowerCase())
+                                        && !vacancyRepository.existsByExternalIdAndAggregator(
+                                                vacancy.getId(), Aggregator.HH))
+                .forEach(
+                        vacancy -> {
+                            Vacancy entity = vacancyMapper.asEntity(programmingLanguage, vacancy);
+                            vacancyRepository.save(entity);
+                        });
     }
 }

@@ -7,22 +7,27 @@ import com.sdk.itjobs.dto.auth.response.TokenResponse;
 import com.sdk.itjobs.dto.user.UserPrincipal;
 import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.exception.auth.CorruptedTokenException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
 import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.UUID;
+
+import javax.crypto.SecretKey;
 
 @Component
 @RequiredArgsConstructor
@@ -50,9 +55,15 @@ public class TokenManager {
     }
 
     @Transactional
-    public Pair<TokenResponse, String> refreshTokensPair(String refreshToken) throws ResourceNotFoundException, CorruptedTokenException {
-        RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
-                .orElseThrow(() -> new ResourceNotFoundException(RefreshToken.class, "token", refreshToken));
+    public Pair<TokenResponse, String> refreshTokensPair(String refreshToken)
+            throws ResourceNotFoundException, CorruptedTokenException {
+        RefreshToken token =
+                refreshTokenRepository
+                        .findByToken(refreshToken)
+                        .orElseThrow(
+                                () ->
+                                        new ResourceNotFoundException(
+                                                RefreshToken.class, "token", refreshToken));
         if (token.getExpiresAt().before(Date.from(Instant.now()))) {
             throw new CorruptedTokenException();
         }
@@ -80,13 +91,22 @@ public class TokenManager {
 
     private String generateAccessToken(Long userId) {
         Date expiration = getExpirationDate(accessTokenLifetime);
-        return Jwts.builder().claim("userId", userId).expiration(expiration).signWith(key).compact();
+        return Jwts.builder()
+                .claim("userId", userId)
+                .expiration(expiration)
+                .signWith(key)
+                .compact();
     }
 
     private String generateRefreshToken(User user) {
         refreshTokenRepository.deleteByUserId(user.getId());
         Date expiration = getExpirationDate(refreshTokenLifetime);
-        RefreshToken refreshToken = RefreshToken.builder().user(user).expiresAt(expiration).token(UUID.randomUUID().toString()).build();
+        RefreshToken refreshToken =
+                RefreshToken.builder()
+                        .user(user)
+                        .expiresAt(expiration)
+                        .token(UUID.randomUUID().toString())
+                        .build();
         refreshTokenRepository.save(refreshToken);
         return refreshToken.getToken();
     }

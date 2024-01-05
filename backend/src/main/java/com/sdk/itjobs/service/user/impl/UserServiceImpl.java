@@ -6,7 +6,9 @@ import com.sdk.itjobs.dto.user.response.UserResponse;
 import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.mapper.user.UserMapper;
 import com.sdk.itjobs.service.user.UserService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findEntityById(Long id) throws ResourceNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(User.class, "id", id));
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(User.class, "id", id));
     }
 
     @Override

@@ -1,4 +1,3 @@
 package com.sdk.itjobs.dto;
 
-public record AppMessage(String message) {
-}
+public record AppMessage(String message) {}

@@ -1,6 +1,5 @@
 package com.sdk.itjobs.service.user;
 
-
 import com.sdk.itjobs.database.entity.user.User;
 import com.sdk.itjobs.dto.user.response.UserResponse;
 import com.sdk.itjobs.exception.ResourceNotFoundException;

@@ -13,7 +13,9 @@ import com.sdk.itjobs.exception.auth.IncorrectPasswordException;
 import com.sdk.itjobs.mapper.user.UserMapper;
 import com.sdk.itjobs.service.auth.AuthService;
 import com.sdk.itjobs.util.TokenManager;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,8 @@ public class AuthServiceImpl implements AuthService {
     private final TokenManager tokenManager;
 
     @Override
-    public UserResponse register(RegistrationRequest request) throws ResourceAlreadyExistsException {
+    public UserResponse register(RegistrationRequest request)
+            throws ResourceAlreadyExistsException {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ResourceAlreadyExistsException(User.class, "email", request.getEmail());
         }
@@ -39,7 +42,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Pair<TokenResponse, String> login(LoginRequest request) throws ResourceNotFoundException, IncorrectPasswordException {
+    public Pair<TokenResponse, String> login(LoginRequest request)
+            throws ResourceNotFoundException, IncorrectPasswordException {
         User user = findEntityByEmail(request.getEmail());
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new IncorrectPasswordException();
@@ -48,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Pair<TokenResponse, String> refresh(String refreshToken) throws CorruptedTokenException, ResourceNotFoundException {
+    public Pair<TokenResponse, String> refresh(String refreshToken)
+            throws CorruptedTokenException, ResourceNotFoundException {
         return tokenManager.refreshTokensPair(refreshToken);
     }
 
@@ -58,6 +63,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private User findEntityByEmail(String email) throws ResourceNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(User.class, "email", email));
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(User.class, "email", email));
     }
 }

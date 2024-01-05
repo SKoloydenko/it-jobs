@@ -2,8 +2,10 @@ package com.sdk.itjobs.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

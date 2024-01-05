@@ -1,8 +1,12 @@
 package com.sdk.itjobs.database.entity.user;
 
+import static com.sdk.itjobs.util.constant.JPAConstants.emailLength;
+import static com.sdk.itjobs.util.constant.JPAConstants.passwordHashLength;
+
 import com.sdk.itjobs.database.entity.AbstractCreatedAtEntity;
 import com.sdk.itjobs.database.entity.vacancy.FavouriteVacancy;
 import com.sdk.itjobs.util.constant.enumeration.UserRole;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +24,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-import static com.sdk.itjobs.util.constant.JPAConstants.emailLength;
-import static com.sdk.itjobs.util.constant.JPAConstants.passwordHashLength;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -29,7 +31,7 @@ import static com.sdk.itjobs.util.constant.JPAConstants.passwordHashLength;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-final public class User extends AbstractCreatedAtEntity {
+public final class User extends AbstractCreatedAtEntity {
     @Column(nullable = false, length = emailLength, unique = true)
     private String email;
 
@@ -44,6 +46,10 @@ final public class User extends AbstractCreatedAtEntity {
         return role == UserRole.ADMIN;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Set<FavouriteVacancy> favouriteVacancies;
 }

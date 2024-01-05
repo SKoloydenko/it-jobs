@@ -7,6 +7,7 @@ import com.sdk.itjobs.dto.client.response.SuperJobClientResponse;
 import com.sdk.itjobs.dto.vacancy.response.VacancyResponse;
 import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +30,8 @@ public class VacancyMapper {
                 .build();
     }
 
-    public Vacancy asEntity(ProgrammingLanguage programmingLanguage, SuperJobClientResponse request) {
+    public Vacancy asEntity(
+            ProgrammingLanguage programmingLanguage, SuperJobClientResponse request) {
         String minSalary = request.getMinSalary();
         String maxSalary = request.getMaxSalary();
         return Vacancy.builder()
@@ -63,7 +65,6 @@ public class VacancyMapper {
                 page.stream().map(this::asResponse).collect(Collectors.toList()),
                 (long) page.getNumber(),
                 (long) page.getNumberOfElements(),
-                (long) page.getTotalPages()
-        );
+                (long) page.getTotalPages());
     }
 }

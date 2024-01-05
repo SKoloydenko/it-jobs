@@ -12,7 +12,9 @@ import com.sdk.itjobs.mapper.vacancy.FavouriteVacancyMapper;
 import com.sdk.itjobs.service.user.UserService;
 import com.sdk.itjobs.service.vacancy.common.VacancyService;
 import com.sdk.itjobs.service.vacancy.favourite.FavouriteVacancyService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,9 +34,11 @@ public class FavouriteVacancyServiceImpl implements FavouriteVacancyService {
     }
 
     @Override
-    public FavouriteVacancyResponse createFavouriteVacancy(Long vacancyId, Long userId) throws ResourceAlreadyExistsException, ResourceNotFoundException {
+    public FavouriteVacancyResponse createFavouriteVacancy(Long vacancyId, Long userId)
+            throws ResourceAlreadyExistsException, ResourceNotFoundException {
         if (favouriteVacancyRepository.existsByVacancyIdAndUserId(vacancyId, userId)) {
-            throw new ResourceAlreadyExistsException(FavouriteVacancy.class, "vacancy id", vacancyId, "user id", userId);
+            throw new ResourceAlreadyExistsException(
+                    FavouriteVacancy.class, "vacancy id", vacancyId, "user id", userId);
         }
 
         Vacancy vacancy = vacancyService.findEntityById(vacancyId);

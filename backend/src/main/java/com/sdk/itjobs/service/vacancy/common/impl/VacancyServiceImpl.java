@@ -8,7 +8,9 @@ import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.mapper.vacancy.VacancyMapper;
 import com.sdk.itjobs.service.vacancy.common.VacancyService;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,14 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public Vacancy findEntityById(Long id) throws ResourceNotFoundException {
-        return vacancyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Vacancy.class, "id", id));
+        return vacancyRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Vacancy.class, "id", id));
     }
 
     @Override
-    public PageResponse<VacancyResponse> list(ProgrammingLanguage programmingLanguage, Pageable pageable) {
+    public PageResponse<VacancyResponse> list(
+            ProgrammingLanguage programmingLanguage, Pageable pageable) {
         Page<Vacancy> page;
         if (programmingLanguage == null) {
             page = vacancyRepository.findAll(pageable);

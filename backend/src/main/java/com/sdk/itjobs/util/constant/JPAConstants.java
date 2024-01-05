@@ -2,8 +2,7 @@ package com.sdk.itjobs.util.constant;
 
 public class JPAConstants {
 
-    private JPAConstants() {
-    }
+    private JPAConstants() {}
 
     public static final int emailLength = 120;
     public static final int passwordMinLength = 8;

@@ -3,8 +3,11 @@ package com.sdk.itjobs.initializer;
 import com.sdk.itjobs.database.entity.user.User;
 import com.sdk.itjobs.database.repository.user.UserRepository;
 import com.sdk.itjobs.util.constant.enumeration.UserRole;
+
 import jakarta.annotation.PostConstruct;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +23,12 @@ public class AdminInitializer {
         String adminEmail = "admin@mail.ru";
         if (!userRepository.existsByEmail(adminEmail)) {
             String passwordHash = passwordEncoder.encode("password");
-            User admin = User.builder().email(adminEmail).passwordHash(passwordHash).role(UserRole.ADMIN).build();
+            User admin =
+                    User.builder()
+                            .email(adminEmail)
+                            .passwordHash(passwordHash)
+                            .role(UserRole.ADMIN)
+                            .build();
             userRepository.save(admin);
         }
     }
