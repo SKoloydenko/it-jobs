@@ -5,6 +5,7 @@ import static com.sdk.itjobs.util.constant.UrlConstants.API_V1_PUBLIC;
 import com.sdk.itjobs.dto.PageResponse;
 import com.sdk.itjobs.dto.vacancy.response.VacancyResponse;
 import com.sdk.itjobs.service.vacancy.common.VacancyService;
+import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
 
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,18 @@ public class PublicVacancyController {
     public ResponseEntity<?> list(
             @RequestParam(value = "programmingLanguage", required = false)
                     ProgrammingLanguage programmingLanguage,
+            @RequestParam(value = "minSalary", required = false) Long minSalary,
+            @RequestParam(value = "maxSalary", required = false) Long maxSalary,
+            @RequestParam(value = "aggregator", required = false) Aggregator aggregator,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "20") Integer size) {
         PageResponse<VacancyResponse> vacancies =
-                vacancyService.list(programmingLanguage, PageRequest.of(page - 1, size));
+                vacancyService.list(
+                        programmingLanguage,
+                        minSalary,
+                        maxSalary,
+                        aggregator,
+                        PageRequest.of(page - 1, size));
         return ResponseEntity.ok().body(vacancies);
     }
 }

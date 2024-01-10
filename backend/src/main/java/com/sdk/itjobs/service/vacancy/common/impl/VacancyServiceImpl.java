@@ -7,6 +7,7 @@ import com.sdk.itjobs.dto.vacancy.response.VacancyResponse;
 import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.mapper.vacancy.VacancyMapper;
 import com.sdk.itjobs.service.vacancy.common.VacancyService;
+import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
 
 import lombok.RequiredArgsConstructor;
@@ -31,13 +32,14 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public PageResponse<VacancyResponse> list(
-            ProgrammingLanguage programmingLanguage, Pageable pageable) {
-        Page<Vacancy> page;
-        if (programmingLanguage == null) {
-            page = vacancyRepository.findAll(pageable);
-        } else {
-            page = vacancyRepository.findByProgrammingLanguage(programmingLanguage, pageable);
-        }
+            ProgrammingLanguage programmingLanguage,
+            Long minSalary,
+            Long maxSalary,
+            Aggregator aggregator,
+            Pageable pageable) {
+        Page<Vacancy> page =
+                vacancyRepository.findByFilters(
+                        programmingLanguage, minSalary, maxSalary, aggregator, pageable);
         return vacancyMapper.asPageResponse(page);
     }
 }

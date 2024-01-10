@@ -5,6 +5,7 @@ import com.sdk.itjobs.service.vacancy.hh.HHVacancyAggregationService;
 import com.sdk.itjobs.service.vacancy.superjob.SuperJobVacancyAggregationService;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,17 +23,22 @@ public class VacancyAggregationScheduler {
     private final SuperJobVacancyAggregationService superJobVacancyAggregationService;
 
     @Scheduled(cron = "0 0/30 * * * ?")
+    @PostConstruct
     void aggregate() {
-        List<ProgrammingLanguage> programmingLanguages =
-                new ArrayList<>(Arrays.asList(ProgrammingLanguage.values()));
-        programmingLanguages.forEach(
-                programmingLanguage -> {
-                    try {
-                        hhVacancyAggregationService.aggregate(programmingLanguage);
-                        superJobVacancyAggregationService.aggregate(programmingLanguage);
-                    } catch (JsonProcessingException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        try {
+            List<ProgrammingLanguage> programmingLanguages =
+                    new ArrayList<>(Arrays.asList(ProgrammingLanguage.values()));
+            programmingLanguages.forEach(
+                    programmingLanguage -> {
+                        try {
+                            hhVacancyAggregationService.aggregate(programmingLanguage);
+                            superJobVacancyAggregationService.aggregate(programmingLanguage);
+                        } catch (JsonProcessingException | InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

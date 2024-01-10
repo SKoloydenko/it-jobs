@@ -42,8 +42,8 @@ public class SuperJobVacancyAggregationServiceImpl implements SuperJobVacancyAgg
     private List<SuperJobClientResponse> getClientResponse(ProgrammingLanguage programmingLanguage)
             throws JsonProcessingException, InterruptedException {
         long page = 0L;
-        Long maxPage = null;
-        final Long pageSize = 100L;
+        Long maxPage = 10L;
+        final Long pageSize = 20L;
 
         List<SuperJobClientResponse> vacancies = new ArrayList<>();
         do {

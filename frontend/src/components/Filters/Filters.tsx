@@ -83,7 +83,6 @@ const Filters: React.FC = () => {
           text="Применить"
           theme={ButtonTheme.DARK}
           onClick={() => {
-            console.log(programmingLanguage, minSalary, maxSalary, aggregator);
             getVacancies(
               1,
               programmingLanguage,
@@ -96,7 +95,10 @@ const Filters: React.FC = () => {
         <Button
           text="Сброс"
           theme={ButtonTheme.LIGHT_BORDER}
-          onClick={() => reset()}
+          onClick={() => {
+            reset();
+            getVacancies(1);
+          }}
         />
       </div>
     </div>

@@ -17,7 +17,7 @@ const VacancyBoard: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ position: "absolute", top: "40%", left: "50%" }}>
+      <div style={{ position: "absolute", top: "45%", left: "45%" }}>
         <Loader />
       </div>
     );
