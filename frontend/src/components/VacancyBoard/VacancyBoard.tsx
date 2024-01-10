@@ -8,8 +8,17 @@ import { SpacerAxis } from "../Spacer/Spacer";
 
 const VacancyBoard: React.FC = () => {
   const [page, setPage] = useState(1);
+  const { user } = useTypedSelector((state) => state.user);
   const { vacancies, loading } = useTypedSelector((state) => state.vacancy);
-  const { getVacancies } = useActions();
+  const { getVacanciesForPublic, getVacanciesForUser } = useActions();
+
+  const getVacancies = (page?: number) => {
+    if (user) {
+      getVacanciesForUser(page);
+    } else {
+      getVacanciesForPublic(page);
+    }
+  };
 
   useEffect(() => {
     getVacancies(page);
@@ -39,6 +48,7 @@ const VacancyBoard: React.FC = () => {
             maxSalary={vacancy.maxSalary}
             employer={vacancy.employer}
             url={vacancy.url}
+            favourite={vacancy.favourite}
           />
         ))}
         <Spacer size={24} axis={SpacerAxis.VERTICAL} />

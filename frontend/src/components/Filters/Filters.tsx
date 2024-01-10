@@ -9,7 +9,8 @@ import { ButtonTheme } from "../Button/Button";
 import Input from "../Input";
 
 const Filters: React.FC = () => {
-  const { programmingLanguage, minSalary, maxSalary, aggregator } =
+  const { user } = useTypedSelector((state) => state.user);
+  const { programmingLanguage, aggregator } =
     useTypedSelector((state) => state.filters);
   const {
     reset,
@@ -17,8 +18,17 @@ const Filters: React.FC = () => {
     setMinSalary,
     setMaxSalary,
     setAggregator,
-    getVacancies,
+    getVacanciesForPublic,
+    getVacanciesForUser,
   } = useActions();
+
+  const getVacancies = (page?: number) => {
+    if (user) {
+      getVacanciesForUser(page);
+    } else {
+      getVacanciesForPublic(page);
+    }
+  };
 
   return (
     <div className={style.container}>
@@ -83,13 +93,7 @@ const Filters: React.FC = () => {
           text="Применить"
           theme={ButtonTheme.DARK}
           onClick={() => {
-            getVacancies(
-              1,
-              programmingLanguage,
-              minSalary,
-              maxSalary,
-              aggregator,
-            );
+            getVacancies(1);
           }}
         />
         <Button

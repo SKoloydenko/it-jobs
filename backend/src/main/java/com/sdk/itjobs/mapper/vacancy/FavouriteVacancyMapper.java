@@ -25,7 +25,7 @@ public class FavouriteVacancyMapper {
     public FavouriteVacancyResponse asResponse(FavouriteVacancy favouriteVacancy) {
         return FavouriteVacancyResponse.builder()
                 .id(favouriteVacancy.getId())
-                .vacancy(vacancyMapper.asResponse(favouriteVacancy.getVacancy()))
+                .vacancy(vacancyMapper.asPublicResponse(favouriteVacancy.getVacancy()))
                 .build();
     }
 

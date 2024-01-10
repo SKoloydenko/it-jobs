@@ -4,13 +4,15 @@ import com.sdk.itjobs.database.entity.vacancy.Vacancy;
 import com.sdk.itjobs.dto.PageResponse;
 import com.sdk.itjobs.dto.client.response.HHClientResponse;
 import com.sdk.itjobs.dto.client.response.SuperJobClientResponse;
-import com.sdk.itjobs.dto.vacancy.response.VacancyResponse;
+import com.sdk.itjobs.dto.vacancy.response.VacancyPublicResponse;
+import com.sdk.itjobs.dto.vacancy.response.VacancyUserResponse;
 import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,8 +48,8 @@ public class VacancyMapper {
                 .build();
     }
 
-    public VacancyResponse asResponse(Vacancy vacancy) {
-        return VacancyResponse.builder()
+    public VacancyPublicResponse asPublicResponse(Vacancy vacancy) {
+        return VacancyPublicResponse.builder()
                 .id(vacancy.getId())
                 .programmingLanguage(vacancy.getProgrammingLanguage())
                 .title(vacancy.getTitle())
@@ -60,9 +62,33 @@ public class VacancyMapper {
                 .build();
     }
 
-    public PageResponse<VacancyResponse> asPageResponse(Page<Vacancy> page) {
+    public VacancyUserResponse asUserResponse(Vacancy vacancy, Boolean favourite) {
+        return VacancyUserResponse.builder()
+                .id(vacancy.getId())
+                .programmingLanguage(vacancy.getProgrammingLanguage())
+                .title(vacancy.getTitle())
+                .minSalary(vacancy.getMinSalary())
+                .maxSalary(vacancy.getMaxSalary())
+                .employer(vacancy.getEmployer())
+                .url(vacancy.getUrl())
+                .externalId(vacancy.getExternalId())
+                .aggregator(vacancy.getAggregator())
+                .favourite(favourite)
+                .build();
+    }
+
+    public PageResponse<VacancyPublicResponse> asPublicPageResponse(Page<Vacancy> page) {
         return new PageResponse<>(
-                page.stream().map(this::asResponse).collect(Collectors.toList()),
+                page.stream().map(this::asPublicResponse).collect(Collectors.toList()),
+                (long) page.getNumber(),
+                (long) page.getNumberOfElements(),
+                (long) page.getTotalPages());
+    }
+
+    public PageResponse<VacancyUserResponse> asUserPageResponse(
+            List<VacancyUserResponse> vacancies, Page<Vacancy> page) {
+        return new PageResponse<>(
+                vacancies,
                 (long) page.getNumber(),
                 (long) page.getNumberOfElements(),
                 (long) page.getTotalPages());

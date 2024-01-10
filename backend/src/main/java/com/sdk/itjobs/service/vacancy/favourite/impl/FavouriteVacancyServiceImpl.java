@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,11 +52,14 @@ public class FavouriteVacancyServiceImpl implements FavouriteVacancyService {
     }
 
     @Override
-    public void deleteFavouriteVacancy(Long id) throws ResourceNotFoundException {
-        if (!favouriteVacancyRepository.existsById(id)) {
-            throw new ResourceNotFoundException(FavouriteVacancy.class, "id", id);
+    @Transactional
+    public void deleteFavouriteVacancy(Long vacancyId, Long userId)
+            throws ResourceNotFoundException {
+        if (!favouriteVacancyRepository.existsByVacancyIdAndUserId(vacancyId, userId)) {
+            throw new ResourceNotFoundException(
+                    FavouriteVacancy.class, "vacancy id", vacancyId, "user id", userId);
         }
 
-        favouriteVacancyRepository.deleteById(id);
+        favouriteVacancyRepository.deleteByVacancyIdAndUserId(vacancyId, userId);
     }
 }

@@ -5,11 +5,15 @@ import static com.sdk.itjobs.util.constant.UrlConstants.API_V1_USER;
 import com.sdk.itjobs.dto.AppMessage;
 import com.sdk.itjobs.dto.PageResponse;
 import com.sdk.itjobs.dto.vacancy.response.FavouriteVacancyResponse;
+import com.sdk.itjobs.dto.vacancy.response.VacancyUserResponse;
 import com.sdk.itjobs.exception.ResourceAlreadyExistsException;
 import com.sdk.itjobs.exception.ResourceNotFoundException;
 import com.sdk.itjobs.service.permission.PermissionService;
+import com.sdk.itjobs.service.vacancy.common.VacancyService;
 import com.sdk.itjobs.service.vacancy.favourite.FavouriteVacancyService;
 
+import com.sdk.itjobs.util.constant.enumeration.Aggregator;
+import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +33,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserVacancyController {
     private final PermissionService permissionService;
     private final FavouriteVacancyService favouriteVacancyService;
+    private final VacancyService vacancyService;
+
+    @GetMapping
+    public ResponseEntity<?> list(
+            @RequestParam(value = "programmingLanguage", required = false)
+                    ProgrammingLanguage programmingLanguage,
+            @RequestParam(value = "minSalary", required = false) Long minSalary,
+            @RequestParam(value = "maxSalary", required = false) Long maxSalary,
+            @RequestParam(value = "aggregator", required = false) Aggregator aggregator,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "20") Integer size) {
+        PageResponse<VacancyUserResponse> vacancies =
+                vacancyService.listForUser(
+                        permissionService.getPrincipal(),
+                        programmingLanguage,
+                        minSalary,
+                        maxSalary,
+                        aggregator,
+                        PageRequest.of(page - 1, size));
+        return ResponseEntity.ok().body(vacancies);
+    }
 
     @GetMapping("/favourite")
-    public ResponseEntity<?> list(
+    public ResponseEntity<?> listFavouriteVacancies(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "20") Integer size) {
         PageResponse<FavouriteVacancyResponse> vacancies =
@@ -49,10 +74,10 @@ public class UserVacancyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("/favourite/{id}")
-    public ResponseEntity<?> deleteFavouriteVacancy(@PathVariable Long id)
+    @DeleteMapping("/{vacancyId}/favourite")
+    public ResponseEntity<?> deleteFavouriteVacancy(@PathVariable Long vacancyId)
             throws ResourceNotFoundException {
-        favouriteVacancyService.deleteFavouriteVacancy(id);
+        favouriteVacancyService.deleteFavouriteVacancy(vacancyId, permissionService.getPrincipal());
         return ResponseEntity.ok()
                 .body(new AppMessage("Favourite vacancy has been successfully deleted"));
     }

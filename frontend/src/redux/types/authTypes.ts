@@ -18,6 +18,8 @@ export enum AuthActionType {
   LOGOUT = "LOGOUT",
   LOGOUT_SUCCESS = "LOGOUT_SUCCESS",
   LOGOUT_ERROR = "LOGOUT_ERROR",
+
+  SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN",
 }
 
 interface ResetError {
@@ -61,6 +63,11 @@ interface LogoutError {
   payload: { error: string };
 }
 
+interface SetAccessToken {
+  type: AuthActionType.SET_ACCESS_TOKEN;
+  payload: { accessToken: string };
+}
+
 export type AuthAction =
   | ResetError
   | Register
@@ -71,7 +78,8 @@ export type AuthAction =
   | LoginError
   | Logout
   | LogoutSuccess
-  | LogoutError;
+  | LogoutError
+  | SetAccessToken;
 
 export const AuthErrorType: Record<string, string> = {
   USER_ALREADY_EXISTS: "Такой пользователь уже существует",

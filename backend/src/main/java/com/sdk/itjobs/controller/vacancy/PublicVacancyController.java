@@ -3,7 +3,7 @@ package com.sdk.itjobs.controller.vacancy;
 import static com.sdk.itjobs.util.constant.UrlConstants.API_V1_PUBLIC;
 
 import com.sdk.itjobs.dto.PageResponse;
-import com.sdk.itjobs.dto.vacancy.response.VacancyResponse;
+import com.sdk.itjobs.dto.vacancy.response.VacancyPublicResponse;
 import com.sdk.itjobs.service.vacancy.common.VacancyService;
 import com.sdk.itjobs.util.constant.enumeration.Aggregator;
 import com.sdk.itjobs.util.constant.enumeration.ProgrammingLanguage;
@@ -32,8 +32,8 @@ public class PublicVacancyController {
             @RequestParam(value = "aggregator", required = false) Aggregator aggregator,
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "20") Integer size) {
-        PageResponse<VacancyResponse> vacancies =
-                vacancyService.list(
+        PageResponse<VacancyPublicResponse> vacancies =
+                vacancyService.listForPublic(
                         programmingLanguage,
                         minSalary,
                         maxSalary,

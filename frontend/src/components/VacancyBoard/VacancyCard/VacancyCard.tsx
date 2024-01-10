@@ -4,6 +4,8 @@ import Button from "../../Button";
 import { ButtonTheme } from "../../Button/Button";
 import { ProgrammingLanguage } from "../../../utils/ProgrammingLanguage";
 import Icon from "../../Icon";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import Favourite from "./Favourite";
 
 interface VacancyCardProps {
   id: number;
@@ -13,6 +15,7 @@ interface VacancyCardProps {
   maxSalary: number;
   employer: string;
   url: string;
+  favourite: boolean | null;
 }
 
 const getSalary = (minSalary: number, maxSalary: number): string | null => {
@@ -35,7 +38,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   maxSalary,
   employer,
   url,
+  favourite,
 }) => {
+  const { user } = useTypedSelector((state) => state.user);
   const salary = getSalary(minSalary, maxSalary);
 
   return (
@@ -50,7 +55,6 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         </div>
       </div>
       <div className={style.bottom}>
-        <div className={style.title}></div>
         <Button
           type="button"
           theme={ButtonTheme.DARK}
@@ -58,6 +62,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           link={url}
           target="_blank"
         />
+        {user && (
+          <div>
+            <Favourite vacancyId={id} favourite={favourite} />
+          </div>
+        )}
       </div>
     </div>
   );

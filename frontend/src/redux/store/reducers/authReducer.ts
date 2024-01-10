@@ -38,6 +38,8 @@ export const authReducer = (
       return { ...state, loading: false };
     case AuthActionType.LOGOUT_ERROR:
       return { ...state, loading: false, error: action.payload.error };
+    case AuthActionType.SET_ACCESS_TOKEN:
+      return { ...state, accessToken: action.payload.accessToken };
 
     default:
       return state;

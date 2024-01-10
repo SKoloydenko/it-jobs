@@ -1,0 +1,16 @@
+.icon {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  &::selection {
+    background: none;
+  }
+}
+
+.enabled {
+  @extend .icon
+}
+
+.disabled {
+  @extend .icon
+}

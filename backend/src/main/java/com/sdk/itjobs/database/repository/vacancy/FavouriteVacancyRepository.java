@@ -12,4 +12,6 @@ public interface FavouriteVacancyRepository extends AbstractRepository<Favourite
     boolean existsByVacancyIdAndUserId(Long vacancyId, Long userId);
 
     Page<FavouriteVacancy> findByUserId(Long userId, Pageable pageable);
+
+    void deleteByVacancyIdAndUserId(Long vacancyId, Long userId);
 }

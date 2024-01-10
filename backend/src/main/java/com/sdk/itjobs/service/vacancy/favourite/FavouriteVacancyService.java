@@ -13,5 +13,5 @@ public interface FavouriteVacancyService {
     FavouriteVacancyResponse createFavouriteVacancy(Long vacancyId, Long userId)
             throws ResourceAlreadyExistsException, ResourceNotFoundException;
 
-    void deleteFavouriteVacancy(Long id) throws ResourceNotFoundException;
+    void deleteFavouriteVacancy(Long vacancyId, Long userId) throws ResourceNotFoundException;
 }

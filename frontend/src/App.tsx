@@ -7,10 +7,12 @@ import { Loader } from "./components";
 
 const App: React.FC = () => {
   const { user, loading } = useTypedSelector((state) => state.user);
-  const { getCurrentUser } = useActions();
+  const { setAccessToken, getCurrentUser } = useActions();
 
   useEffect(() => {
-    if (!user) {
+    const token = localStorage.getItem("accessToken");
+    if (token !== null) {
+      setAccessToken(token);
       getCurrentUser();
     }
   }, []);

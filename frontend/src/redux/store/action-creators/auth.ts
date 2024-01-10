@@ -28,6 +28,7 @@ export const login = (loginRequest: LoginRequest) => {
     try {
       dispatch({ type: AuthActionType.LOGIN });
       const response = await AuthService.login(loginRequest);
+      localStorage.setItem("accessToken", response.data.accessToken);
       dispatch({
         type: AuthActionType.LOGIN_SUCCESS,
         payload: response.data,
@@ -63,6 +64,15 @@ export const logout = () => {
 export const resetAuthError = () => ({
   type: AuthActionType.RESET_ERROR,
 });
+
+export const setAccessToken = (accessToken: string) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: AuthActionType.SET_ACCESS_TOKEN,
+      payload: { accessToken },
+    });
+  };
+};
 
 const getAuthError = () => {
   return "Ошибка";
