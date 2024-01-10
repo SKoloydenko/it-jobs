@@ -7,3 +7,6 @@ export { default as LoginForm } from "./LoginForm";
 export { default as RegisterForm } from "./RegisterForm";
 export { default as MatchingInputs } from "./MatchingInputs";
 export { default as Loader } from "./Loader";
+export { default as Icon } from "./Icon";
+export { default as Pagination } from "./Pagination";
+export { default as Filters } from "./Filters";

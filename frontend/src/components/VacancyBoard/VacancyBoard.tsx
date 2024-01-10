@@ -1,41 +1,57 @@
-import React, {useEffect} from "react";
-import {Loader} from "components";
-import {useActions} from "hooks/useActions";
-import {useTypedSelector} from "hooks/useTypedSelector";
+import React, { useEffect, useState } from "react";
+import { Filters, Loader, Pagination, Spacer } from "components";
+import { useActions } from "hooks/useActions";
+import { useTypedSelector } from "hooks/useTypedSelector";
 import style from "./VacancyBoard.module.scss";
 import VacancyCard from "./VacancyCard";
+import { SpacerAxis } from "../Spacer/Spacer";
 
 const VacancyBoard: React.FC = () => {
-	const { vacancies, loading } = useTypedSelector((state) => state.vacancy);
-	const { getVacancies } = useActions();
+  const [page, setPage] = useState(1);
+  const { vacancies, loading } = useTypedSelector((state) => state.vacancy);
+  const { getVacancies } = useActions();
 
-	useEffect(() => {
-		if (vacancies == null) {
-			getVacancies();
-		}
-	}, []);
+  useEffect(() => {
+    getVacancies(page);
+  }, [page]);
 
-	if (loading) {
-		return <Loader />;
-	}
+  if (loading) {
+    return (
+      <div style={{ position: "absolute", top: "40%", left: "50%" }}>
+        <Loader />
+      </div>
+    );
+  }
 
-	return (
-		<div className={style.container}>
-			<div className={style.board}>
-				{vacancies?.content.map((vacancy) => (
-					<VacancyCard
-						key={vacancy.id}
-						id={vacancy.id}
-						title={vacancy.title}
-						minSalary={vacancy.minSalary}
-						maxSalary={vacancy.maxSalary}
-						employer={vacancy.employer}
-						url={vacancy.url}
-					/>
-				))}
-			</div>
-		</div>
-	);
+  const onPageChange = (page: number) => setPage(page);
+
+  return (
+    <div className={style.container}>
+      <Filters />
+      <div className={style.content}>
+        {vacancies?.content.map((vacancy) => (
+          <VacancyCard
+            key={vacancy.id}
+            id={vacancy.id}
+            programmingLanguage={vacancy.programmingLanguage}
+            title={vacancy.title}
+            minSalary={vacancy.minSalary}
+            maxSalary={vacancy.maxSalary}
+            employer={vacancy.employer}
+            url={vacancy.url}
+          />
+        ))}
+        <Spacer size={24} axis={SpacerAxis.VERTICAL} />
+        {vacancies && (
+          <Pagination
+            page={page}
+            totalPages={vacancies?.totalPages}
+            onPageChange={onPageChange}
+          />
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default VacancyBoard;

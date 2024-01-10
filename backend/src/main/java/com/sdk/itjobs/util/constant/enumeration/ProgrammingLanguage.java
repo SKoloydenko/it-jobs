@@ -4,14 +4,8 @@ public enum ProgrammingLanguage {
     JAVA,
     KOTLIN,
     PYTHON,
-    C,
-    CPP,
     CSHARP,
     GO,
-    RUST,
     JAVASCRIPT,
     PHP,
-    SWIFT,
-    RUBY,
-    SCALA
 }

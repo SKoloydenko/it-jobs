@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px
+}
+
+.button {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 0 3px #000;
+  border-radius: 5px;
+  font: 18px "Montserrat", sans-serif;
+  color: #6246ea;
+  background: #fffffe;
+}
+
+.active {
+  @extend .button;
+  color: #fffffe;
+  background: #6246ea;
+
+}
+
+.disabled {
+  @extend .button;
+}

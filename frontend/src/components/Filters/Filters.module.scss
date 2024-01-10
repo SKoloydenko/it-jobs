@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 3;
+  gap: 32px;
+  max-width: 330px;
+  text-align: center;
+}
+
+.title {
+  font: 18px "Montserrat", sans-serif;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.text {
+  font: 18px "Montserrat", sans-serif;
+  font-weight: 600;
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.option {
+  cursor: pointer;
+  font: 14px "Montserrat", sans-serif;
+  font-weight: 600;
+  margin: 5px;
+  width: 96px;
+  height: 48px;
+  box-shadow: 0 0 3px #000;
+  border-radius: 5px;
+}
+
+.active {
+  @extend .option;
+  color: #fffffe;
+  background: #6246ea;
+}
+
+.disabled {
+  @extend .option
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
