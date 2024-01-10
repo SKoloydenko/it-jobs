@@ -50,7 +50,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         </div>
       </div>
       <div className={style.bottom}>
-        <div className={style.title}>Favourite</div>
+        <div className={style.title}></div>
         <Button
           type="button"
           theme={ButtonTheme.DARK}
