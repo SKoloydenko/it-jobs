@@ -48,6 +48,7 @@ export const logout = () => {
     try {
       dispatch({ type: AuthActionType.LOGOUT });
       await AuthService.logout();
+      localStorage.removeItem("accessToken");
       dispatch({
         type: AuthActionType.LOGOUT_SUCCESS,
       });
